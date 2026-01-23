@@ -9,7 +9,12 @@ const app = express();
 connectDB(); 
 
 // 2. Middlewares
-app.use(cors()); // Critical for your React frontend to talk to this
+// Replace line 12 with this:
+app.use(cors({
+    origin: 'https://solaris-sports-frontend.onrender.com', // 👈 Put your actual Render Frontend URL here
+    methods: ['GET', 'POST'],
+    credentials: true
+}));
 app.use(express.json()); // Essential to read the form data
 
 // 3. Routes
