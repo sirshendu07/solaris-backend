@@ -11,7 +11,7 @@ connectDB();
 // 2. Middlewares
 // Replace line 12 with this:
 app.use(cors({
-    origin: 'https://solaris-sports-frontend.onrender.com', // 👈 Put your actual Render Frontend URL here
+    origin: 'https://solaris-frontend-di0j.onrender.com', // 👈 Put your actual Render Frontend URL here
     methods: ['GET', 'POST'],
     credentials: true
 }));
