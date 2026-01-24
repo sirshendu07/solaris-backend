@@ -35,10 +35,15 @@ const ParticipantSchema = new mongoose.Schema({
     type: String,
     required: true // Captures 'A', 'B', 'C', etc. from your selection page
   },
-  selectedSport: {
-    type: String,
-    required: true // Captures the A1, B1, etc. chosen in the form
-  },
+  
+ // Change this section in your Participant.js file
+selectedSports: {
+  type: [String], // The [ ] brackets tell MongoDB to expect a list/array
+  required: true,
+  validate: [v => v.length > 0 && v.length <= 2, 'Select 1 or 2 sports'] 
+},
+
+
   registrationDate: {
     type: Date,
     default: Date.now // Automatically tracks when they signed up
