@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-// This schema defines exactly what information we save for each participant
 const ParticipantSchema = new mongoose.Schema({
   fullName: {
     type: String,
@@ -10,7 +9,7 @@ const ParticipantSchema = new mongoose.Schema({
   tower: {
     type: String,
     required: true,
-    enum: ['I', 'II'] // Restricts data to only these two options
+    enum: ['I', 'II'] 
   },
   flatNo: {
     type: String,
@@ -19,38 +18,33 @@ const ParticipantSchema = new mongoose.Schema({
   phoneNo: {
     type: String,
     required: true,
-    unique: true // Prevents double registration with the same number
+    unique: false // Correctly set to false to allow family registrations
   },
   gender: {
     type: String,
     required: true,
-    enum: ['Male', 'Female', 'Other'] // Standard categories for your society
+    enum: ['Male', 'Female'] 
   },
   residentialStatus: {
     type: String,
     required: true,
-    enum: ['Owner', 'Tenant'] // Specific requirement for Solaris Bonhooghly
+    enum: ['Owner', 'Tenant']
   },
   ageGroup: {
     type: String,
-    required: true // Captures 'A', 'B', 'C', etc. from your selection page
+    required: true 
   },
-  
- // Change this section in your Participant.js file
-selectedSports: {
-  type: [String], // The [ ] brackets tell MongoDB to expect a list/array
-  required: true,
-  validate: [v => v.length > 0 && v.length <= 2, 'Select 1 or 2 sports'] 
-},
-
-
+  selectedSports: {
+    type: [String], 
+    required: true,
+    validate: [v => v.length > 0, 'At least one event must be assigned'] 
+  },
   registrationDate: {
     type: Date,
-    default: Date.now // Automatically tracks when they signed up
+    default: Date.now 
   }
 });
 
-// Create the model using the schema
-const Participant = mongoose.model('Participant', ParticipantSchema);
-
-module.exports = Participant;
+// Changed to plural 'Participants' to match your naming convention
+const Participants = mongoose.model('Participants', ParticipantSchema);
+module.exports = Participants;
