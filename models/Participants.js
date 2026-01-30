@@ -4,8 +4,7 @@ const ParticipantSchema = new mongoose.Schema({
   fullName: { 
     type: String, 
     required: true, 
-    lowercase: true, // "Sanju" becomes "sanju"
-    trim: true       // " Sanju " becomes "Sanju"
+    trim: true // Removes spaces from front and back
   },
   gender: { type: String, required: true },
   tower: { type: String, required: true },
@@ -21,15 +20,22 @@ const ParticipantSchema = new mongoose.Schema({
   registrationDate: { type: Date, default: Date.now }
 });
 
-// THE MASTER INDEX (Name + Gender + Tower + Flat + Phone)
+// MIDDLEWARE: Fixes multiple internal spaces (e.g. "Sanju    Bera" -> "Sanju Bera")
+ParticipantSchema.pre('save', function(next) {
+  if (this.fullName) {
+    this.fullName = this.fullName.replace(/\s+/g, ' '); 
+  }
+  next();
+});
+
+// THE INDEX: Still blocks duplicates, but allows normal spaces
 ParticipantSchema.index(
   { fullName: 1, gender: 1, tower: 1, flatNo: 1, phoneNo: 1 }, 
   { 
     unique: true,
-    collation: { locale: 'en', strength: 2 },
+    collation: { locale: 'en', strength: 2 }, // Treats "Sanju" and "sanju" as SAME
     partialFilterExpression: { ageGroup: { $ne: "Group I" } } 
   }
 );
 
-const Participants = mongoose.model('Participants', ParticipantSchema);
-module.exports = Participants;
+module.exports = mongoose.model('Participants', ParticipantSchema);
