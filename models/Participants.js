@@ -12,13 +12,19 @@ const ParticipantSchema = new mongoose.Schema({
   registrationDate: { type: Date, default: Date.now }
 });
 
-// THE MASTER INDEX CODE
+// THE ULTIMATE UNIQUE INDEX
+// Includes: fullName, tower, flatNo, and residentialStatus
 ParticipantSchema.index(
-  { fullName: 1, tower: 1, flatNo: 1 }, 
   { 
-    unique: true, // Blocks duplicates
-    collation: { locale: 'en', strength: 2 }, // Ignores CASE (sanJu vs Sanju)
-    // IGNORES Group I (Allows duplicates for Go As You Like)
+    fullName: 1, 
+    tower: 1, 
+    flatNo: 1, 
+    residentialStatus: 1 
+  }, 
+  { 
+    unique: true,
+    collation: { locale: 'en', strength: 2 }, // Ignore Case (Sanju = sanju)
+    // IMPORTANT: Rule does NOT apply to Group I
     partialFilterExpression: { ageGroup: { $ne: "Group I" } } 
   }
 );
