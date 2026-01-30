@@ -13,11 +13,14 @@ const ParticipantSchema = new mongoose.Schema({
 });
 
 // THE CLEAN VERSION: Combined Unique Key + Case Insensitive
+// THE "EXCEPT GROUP I" VERSION
 ParticipantSchema.index(
   { fullName: 1, tower: 1, flatNo: 1 }, 
   { 
     unique: true,
-    collation: { locale: 'en', strength: 2 } // This ignores case differences
+    collation: { locale: 'en', strength: 2 },
+    // This makes the unique rule IGNORE anyone in Group I
+    partialFilterExpression: { ageGroup: { $ne: "Group I" } } 
   }
 );
 
