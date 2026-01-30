@@ -24,5 +24,7 @@ ParticipantSchema.index(
   }
 );
 
+// THE "ONLY GROUP I" VERSION
+
 const Participants = mongoose.model('Participants', ParticipantSchema);
 module.exports = Participants;
